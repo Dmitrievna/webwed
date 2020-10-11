@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+<!-- here the user fill the basic info about the wedding -->
+
+{% block title %}Let us meet{% endblock %}
+
+{% block content %}
+    <form action="/your-name/" method = 'post'>
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" value="Submit">Say hi!</button>
+    </form>
+{% endblock %}

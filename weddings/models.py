@@ -1,15 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Occupation(models.Model):
-    """Model for representing an instance of occupation for the suppliers"""
-
-    title = models.CharField(max_length=200)
-    short_title = models.CharField(max_length=3)
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.title
 
 class Location(models.Model):
     """Model for representing an instance of location for suppliers and a wedding"""
@@ -19,7 +10,7 @@ class Location(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return self.title
+        return f'{self.city}, {self.country}'
 
 class Category(models.Model):
     """Model for representing an instance of location for suppliers and a wedding"""
@@ -41,7 +32,7 @@ class Supplier(models.Model):
     phone_number = models.CharField(max_length=200)
     web_site = models.CharField(max_length=200)
     description = models.TextField()
-    occupation = models.ForeignKey(Occupation, on_delete=models.SET_NULL, null=True)
+    occupation = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
@@ -51,30 +42,6 @@ class Supplier(models.Model):
     def get_absolute_url(self):
         """Returns the url to access a detail record for this wedding."""
         return reverse('supplier-detail', args=[str(self.id)])
-
-class Task(models.Model):
-    """Model representing an instance of the task"""
-
-    TYPES = (
-    ('I', 'Important'),
-    ('U', 'Urgent'),
-    ('R', 'Rest'),
-    )
-
-    STATUSES = (
-    ('D', 'Done'),
-    ('I', 'In Progress'),
-    ('N', 'Not Started'),
-    )
-
-    title = models.CharField(max_length=200)
-    type = models.CharField(max_length=1, choices=TYPES, default='R' )
-    status = models.CharField(max_length=1, choices=STATUSES, default ='N')
-    due_to = models.DateField()
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.title
 
 class Table(models.Model):
     """Model for the table representation"""
@@ -136,9 +103,9 @@ class Budget(models.Model):
 
     item_title = models.CharField(max_length=200)
     expected_payment = models.IntegerField()
-    resulted_payment = models.IntegerField()
-    amount_paid = models.IntegerField()
-    amount_to_go = models.IntegerField()
+    resulted_payment = models.IntegerField(null=True)
+    amount_paid = models.IntegerField(null=True)
+    amount_to_go = models.IntegerField(null=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     supplier_in_connect = models.ForeignKey(Supplier, on_delete=models.SET_NULL, null=True)
 
@@ -146,6 +113,31 @@ class Budget(models.Model):
         """String for representing the Model object."""
         return f'{self.item_title}, {self.category}'
 
+class Task(models.Model):
+    """Model representing an instance of the task"""
+
+    TYPES = (
+    ('I', 'Important'),
+    ('U', 'Urgent'),
+    ('R', 'Rest'),
+    )
+
+    STATUSES = (
+    ('D', 'Done'),
+    ('I', 'In Progress'),
+    ('N', 'Not Started'),
+    )
+
+    title = models.CharField(max_length=200)
+    type = models.CharField(max_length=1, choices=TYPES, default='R' )
+    status = models.CharField(max_length=1, choices=STATUSES, default ='N')
+    due_to = models.DateField()
+    description = models.TextField(default='description is required')
+    cost = models.ForeignKey(Budget, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return self.title
 
 
 class Wedding(models.Model):

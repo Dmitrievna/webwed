@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% block title %}<title>Weddy</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <!-- Add additional CSS in static file -->
+  {% load static %}
+  <link rel="stylesheet" href={% static 'css/main.css' %} />
+  <link rel="stylesheet" href={% static 'css/sidenav.css' %} />
+</head>
+<body>
+
+    <div class="sidenav">
+      {% block sidebar %}
+          <a href="{% url 'home' %}" class="button">Home</a>
+          <a href="">Guest list</a>
+          <a href="">Budget</a>
+     {% endblock %}
+     </div>
+
+    <div class="main ">{% block content %}{% endblock %}</div>
+
+
+  <!-- Scripts -->
+    <script src={% static 'js/jquery.min.js' %}></script>
+    <script src={% static 'js/skel.min.js' %}></script>
+    <script src={% static 'js/util.js' %}></script>
+    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+    <script src={% static 'js/main.js' %}></script>
+
+</body>
+</html>

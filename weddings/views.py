@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Wedding
 from .models import Supplier
+from rest_framework.decorators import api_view
+from .forms import WeddingForm
 
 # Create your views here.
 
-def index(request):
+def home(request):
     """The view for the welcome page of the app"""
 
     # Generation of some statistical objects for the main page
@@ -26,11 +28,20 @@ def index(request):
 
     # render the HTML data with the data in some context variable
 
-    return render(request, 'index.html', context=context)
+    return render(request, 'home.html', context=context)
 
-# The home page of each user where you can navigate to the all functions of the web_site
+def base(request):
+    #Check how base thing works
+    return render(request, 'base_generic.html')
 
-def home(request):
-    """The users home page"""
+def get_wedding(request):
 
-    return render(request, 'home.html')
+    if request.method == 'POST':
+        form = WeddingForm(request.POST)
+        if form.is_valid():
+
+            return HttpResponseRedirect('/home/')
+    else:
+        form = WeddingForm()
+
+    return render(request, 'get_wedding.html', {'form': form})

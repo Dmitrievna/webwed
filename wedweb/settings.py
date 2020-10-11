@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import json
+#from six.moves.urllib import request
+#from cryptography.x509 import load_pem_x509_certificate
+#from cryptography.hazmat.backends import default_backend
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +37,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 INSTALLED_APPS = [
     'weddings',
     'blogsite',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +47,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+#    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,7 +78,10 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'wedweb.wsgi.application'
+
 
 
 # Database
@@ -131,3 +141,5 @@ STATICFILES_DIRS = [
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/home'
+# One-week activation window
+ACCOUNT_ACTIVATION_DAYS = 7
